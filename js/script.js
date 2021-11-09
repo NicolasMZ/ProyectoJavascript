@@ -31,7 +31,7 @@ class marco {
     precioMetroLineal(){
         switch(this.formaVarilla){
             case 'plana': return 100*this.anchoVarilla;
-            case 'bombé': return 150*this.anchoVarilla;
+            case 'bombe': return 150*this.anchoVarilla;
             case 'italiana': return 200*this.anchoVarilla;
         }
     }
@@ -62,11 +62,39 @@ class marco {
 
 //====== Main app ======
 
+//Cargado de tipos de varillas - Se tomarían desde una base de datos
+let varillas = [];
+varillas.push(["plana",1]);
+varillas.push(["plana",1.5]);
+varillas.push(["plana",2]);
+varillas.push(["plana",3]);
+varillas.push(["plana",4]);
+varillas.push(["plana",4.5]);
+varillas.push(["plana",6]);
+varillas.push(["plana",10]);
+varillas.push(["bombe",1]);
+varillas.push(["bombe",1.5]);
+varillas.push(["bombe",2]);
+varillas.push(["bombe",3]);
+varillas.push(["bombe",4]);
+varillas.push(["bombe",6]);
+varillas.push(["italiana",2]);
+varillas.push(["italiana",3]);
+varillas.push(["italiana",4]);
+varillas.push(["italiana",4.5]);
+varillas.push(["italiana",5.5]);
+varillas.push(["italiana",6]);
+varillas.push(["italiana",7]);
+
 //Nuevo marco e inicialización de propiedades
 const marco1 = new marco(
 promptNumber("Ingrese ancho del marco en centímetros",false,true),
 promptNumber("Ingrese alto del marco en centímetros",false,true));
-
+marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
+marco1.conTapa = window.confirm("¿El marco lleva tapa?");
+marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
+marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
+marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
 do {marco1.formaVarilla = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
 while (marco1.formaVarilla != 1 && marco1.formaVarilla != 2 && marco1.formaVarilla != 3)
 switch(marco1.formaVarilla){
@@ -74,19 +102,20 @@ switch(marco1.formaVarilla){
         marco1.formaVarilla = "plana";
         break;
     case '2':
-        marco1.formaVarilla = "bombé";
+        marco1.formaVarilla = "bombe";
         break;
     case '3':
         marco1.formaVarilla = "italiana";
         break;
 }
-
-marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",true,true);
-marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
-marco1.conTapa = window.confirm("¿El marco lleva tapa?");
-marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
-marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
-marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
+//Verificar que el ancho de varilla esté en el listado de varillas
+let varillasSeleccionadas = varillas.filter(item => item[0] === marco1.formaVarilla);
+marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",false,true);
+if(!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla)) {
+    do {
+        marco1.anchoVarilla = promptNumber("La varilla seleccionada no está disponible en ese ancho. Ingrese nuevamente.",false,true);}
+    while (!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla))
+}
 
 //Cálculo de precio
 marco1.mostrarPrecio();
