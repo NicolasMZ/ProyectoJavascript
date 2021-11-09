@@ -1,3 +1,4 @@
+//====== Prompt con verificaciones para tomar solamente número entero ======
 function promptNumber(message = "", integerOnly = false, positiveOnly = false){
     let value;
     let repeat;
@@ -13,6 +14,7 @@ function promptNumber(message = "", integerOnly = false, positiveOnly = false){
     return value;
 }
 
+//====== Clase para el cálculo de marcos ======
 class marco {
     constructor(ancho,alto){
         this.anchoMarco = ancho;
@@ -43,8 +45,7 @@ class marco {
         this.conPptCol*2000)
     }
     
-
-    mostrarResultado(){
+    mostrarPrecio(){
         let resultado = `Presupuesto por marco medida ${this.anchoMarco} por ${this.altoMarco} con varilla ${this.formaVarilla} de ${this.anchoVarilla} cm.`
         if(this.conVidrio){resultado = resultado + ", con vidrio"};
         if(this.conTapa){resultado = resultado + ", con tapa"};
@@ -53,31 +54,32 @@ class marco {
         if(this.conPptCol){resultado = resultado + ", con paspartú de color"};
 
         let precioLineal = (this.anchoMarco + this.altoMarco)/50 * this.precioMetroLineal();
-        let precioArea = inputAltoMarco*inputAnchoMarco/10000 * this.precioMetroCuadrado();
+        let precioArea = this.anchoMarco*this.altoMarco/10000 * this.precioMetroCuadrado();
 
-        alert(resultado + `.\rEl precio final es de $ ${precioLineal+precioArea}`)
+        alert(`${resultado}.\r\rEl precio final es de $ ${precioLineal + precioArea}`)
     }
 }
 
-let inputAnchoMarco = promptNumber("Ingrese ancho del marco en centímetros",false,true);
-let inputAltoMarco = promptNumber("Ingrese alto del marco en centímetros",false,true);
-const marco1 = new marco(inputAnchoMarco, inputAltoMarco);
+//====== Main app ======
 
-let inputForma;
-do {inputForma = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
-while (inputForma != 1 && inputForma != 2 && inputForma != 3)
-switch(inputForma){
+//Nuevo marco e inicialización de propiedades
+const marco1 = new marco(
+promptNumber("Ingrese ancho del marco en centímetros",false,true),
+promptNumber("Ingrese alto del marco en centímetros",false,true));
+
+do {marco1.formaVarilla = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
+while (marco1.formaVarilla != 1 && marco1.formaVarilla != 2 && marco1.formaVarilla != 3)
+switch(marco1.formaVarilla){
     case '1':
-        inputForma = "plana";
+        marco1.formaVarilla = "plana";
         break;
     case '2':
-        inputForma = "bombé";
+        marco1.formaVarilla = "bombé";
         break;
     case '3':
-        inputForma = "italiana";
+        marco1.formaVarilla = "italiana";
         break;
 }
-marco1.formaVarilla = inputForma;
 
 marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",true,true);
 marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
@@ -86,5 +88,5 @@ marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
 marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
 marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
 
-marco1.mostrarResultado();
-console.log(marco1);
+//Cálculo de precio
+marco1.mostrarPrecio();
