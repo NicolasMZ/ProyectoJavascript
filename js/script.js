@@ -14,6 +14,47 @@ function promptNumber(message = "", integerOnly = false, positiveOnly = false){
     return value;
 }
 
+//====== Función para ordenar el listado de varillas ======
+function ordenarVarillas(indexCampo, ascendente=true){
+    //Revisar el tipo de dato del primer elemento en el campo suministrado por parámetro, para ordenar correctamente
+    switch(typeof(varillas[0][indexCampo])){
+        case 'number':
+            if(ascendente){
+                varillas.sort((item1,item2) => item1[indexCampo] - item2[indexCampo]);
+            } else {
+                varillas.sort((item1,item2) => item2[indexCampo] - item1[indexCampo]);
+            }
+            console.table(varillas);
+            break;
+        case 'string':
+            varillas.sort(function (item1,item2) {
+                let string1 = item1[indexCampo].toUpperCase();
+                let string2 = item2[indexCampo].toUpperCase();
+                if(ascendente){
+                    if(string1 < string2){
+                        return -1;
+                    }
+                    if(string1 > string2){
+                        return 1;
+                    }
+                } else {
+                    if(string1 < string2){
+                        return 1;
+                    }
+                    if(string1 > string2){
+                        return -1;
+                    }
+                }
+                return 0;
+            });
+            console.table(varillas);
+            break;
+        default:
+            alert("El campo no existe, o el tipo de datos no es válido.");
+            break;
+    }
+}
+
 //====== Clase para el cálculo de marcos ======
 class marco {
     constructor(ancho,alto){
@@ -119,3 +160,7 @@ if(!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla)) {
 
 //Cálculo de precio
 marco1.mostrarPrecio();
+ordenarVarillas(0,true);
+ordenarVarillas(0,false);
+ordenarVarillas(1,true);
+ordenarVarillas(1,false);
