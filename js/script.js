@@ -127,40 +127,59 @@ varillas.push(["italiana",5.5]);
 varillas.push(["italiana",6]);
 varillas.push(["italiana",7]);
 
-//Nuevo marco e inicialización de propiedades
-const marco1 = new marco(
-promptNumber("Ingrese ancho del marco en centímetros",false,true),
-promptNumber("Ingrese alto del marco en centímetros",false,true));
-marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
-marco1.conTapa = window.confirm("¿El marco lleva tapa?");
-marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
-marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
-marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
-do {marco1.formaVarilla = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
-while (marco1.formaVarilla != 1 && marco1.formaVarilla != 2 && marco1.formaVarilla != 3)
-switch(marco1.formaVarilla){
-    case '1':
-        marco1.formaVarilla = "plana";
-        break;
-    case '2':
-        marco1.formaVarilla = "bombe";
-        break;
-    case '3':
-        marco1.formaVarilla = "italiana";
-        break;
+// PROCESO OBSOLETO - EL CARGADO DE DATOS SERÍA A TRAVÉS DE LA INTERFAZ (NECESARIO EVENTOS)
+//
+// const marco1 = new marco(
+// promptNumber("Ingrese ancho del marco en centímetros",false,true),
+// promptNumber("Ingrese alto del marco en centímetros",false,true));
+// marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
+// marco1.conTapa = window.confirm("¿El marco lleva tapa?");
+// marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
+// marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
+// marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
+// do {marco1.formaVarilla = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
+// while (marco1.formaVarilla != 1 && marco1.formaVarilla != 2 && marco1.formaVarilla != 3)
+// switch(marco1.formaVarilla){
+//     case '1':
+//         marco1.formaVarilla = "plana";
+//         break;
+//     case '2':
+//         marco1.formaVarilla = "bombe";
+//         break;
+//     case '3':
+//         marco1.formaVarilla = "italiana";
+//         break;
+// }
+// //Verificar que el ancho de varilla esté en el listado de varillas
+// let varillasSeleccionadas = varillas.filter(item => item[0] === marco1.formaVarilla);
+// marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",false,true);
+// if(!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla)) {
+//     do {
+//         marco1.anchoVarilla = promptNumber("La varilla seleccionada no está disponible en ese ancho. Ingrese nuevamente.",false,true);}
+//     while (!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla))
+// }
+
+
+//Interacción con el DOM - Cargado de formas de varilla para el usuario
+let formasVarilla = [];
+formasVarilla[0]=varillas[0][0];
+for(let i = 1; i < varillas.length; i++){
+    if(!(formasVarilla.find(valor => valor === varillas[i][0]))){
+        formasVarilla.push(varillas[i][0]);
+    }
 }
-//Verificar que el ancho de varilla esté en el listado de varillas
-let varillasSeleccionadas = varillas.filter(item => item[0] === marco1.formaVarilla);
-marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",false,true);
-if(!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla)) {
-    do {
-        marco1.anchoVarilla = promptNumber("La varilla seleccionada no está disponible en ese ancho. Ingrese nuevamente.",false,true);}
-    while (!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla))
+for(let varilla of formasVarilla){
+    let opcion = document.createElement("li");
+    opcion.innerHTML = `<button class='btn btn-primary m-1'>${varilla}</button>`;
+    let selector = document.querySelector(".input-forma ul");
+    console.log(selector);
+    selector.appendChild(opcion);
 }
 
-//Cálculo de precio
-marco1.mostrarPrecio();
-ordenarVarillas(0,true);
-ordenarVarillas(0,false);
-ordenarVarillas(1,true);
-ordenarVarillas(1,false);
+
+// //Cálculo de precio
+// marco1.mostrarPrecio();
+// ordenarVarillas(0,true);
+// ordenarVarillas(0,false);
+// ordenarVarillas(1,true);
+// ordenarVarillas(1,false);
