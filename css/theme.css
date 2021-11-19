@@ -11287,12 +11287,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-body {
-  background-image: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url("../assets/img/bg.jpg");
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-}
 
 p {
   line-height: 1.75;
