@@ -26,18 +26,36 @@
         </div>
     </header>
     
-    <div class="row">
-        <section class="options col-md-6">
-            <div class="options1"></div>
-            <div class="options2"></div>
-            <div class="options3"></div>
-            <button class="calculate"></button>
+    <main class="row">
+        <section class="options col-md-6 section-heading">
+            <div class="options1 p-5">
+                <h3 class="section-heading-upper">Tipo de marco</h3>
+                <button class="btn btn-primary">Espejo</button>
+                <button class="btn btn-primary">Enmarcado</button>
+            </div>
+            <div class="options2 p-5">
+                <h3 class="section-heading-upper">Medida de la imagen o espejo (sin marco)</h3>
+                Alto: <input type="text" name="Alto" id="">
+                Ancho: <input type="text" name="Ancho" id="">
+            </div>
+            <div class="options3 p-5">
+                <h3 class="section-heading-upper">Forma de varilla</h3>
+                <ul></ul>
+            </div>
+            <div class="options3 p-5">
+                <h3 class="section-heading-upper">Ancho de varilla</h3>
+                <ul></ul>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary">Calcular</button>
+            </div>
+
         </section>
     
         <aside class="sidePreview col-md-6">
             <img src="" alt="" class="framePreview">
         </aside>
-    </div>
+    </main>
 
     <section class="results row">
         <div class="receipt col-md-4">
