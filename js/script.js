@@ -1,18 +1,56 @@
-//====== Prompt con verificaciones para tomar solamente número entero ======
-function promptNumber(message = "", integerOnly = false, positiveOnly = false){
-    let value;
-    let repeat;
-    do {
-        repeat = false;
-        value = parseFloat(prompt(message));
-        if(isNaN(value)){repeat = true;}
-        else{
-            if(integerOnly && !(Number.isInteger(value))){repeat = true;}
-            if(positiveOnly && value<0){repeat = true;}
-        }
-    } while (repeat)
-    return value;
-}
+// ==========================================================================
+// CÓDIGO OBSOLETO DEBIDO A LA INCORPORACIÓN DE EVENTOS Y MANIPULACIÓN DE DOM
+// ==========================================================================
+//
+// ====== Prompt con verificaciones para tomar solamente número entero ======
+// function promptNumber(message = "", integerOnly = false, positiveOnly = false){
+//     let value;
+//     let repeat;
+//     do {
+//         repeat = false;
+//         value = parseFloat(prompt(message));
+//         if(isNaN(value)){repeat = true;}
+//         else{
+//             if(integerOnly && !(Number.isInteger(value))){repeat = true;}
+//             if(positiveOnly && value<0){repeat = true;}
+//         }
+//     } while (repeat)
+//     return value;
+// }
+//
+// PROCESO OBSOLETO - EL CARGADO DE DATOS SERÍA A TRAVÉS DE LA INTERFAZ (NECESARIO EVENTOS)
+//
+// const marco1 = new marco(
+// promptNumber("Ingrese ancho del marco en centímetros",false,true),
+// promptNumber("Ingrese alto del marco en centímetros",false,true));
+// marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
+// marco1.conTapa = window.confirm("¿El marco lleva tapa?");
+// marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
+// marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
+// marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
+// do {marco1.formaVarilla = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
+// while (marco1.formaVarilla != 1 && marco1.formaVarilla != 2 && marco1.formaVarilla != 3)
+// switch(marco1.formaVarilla){
+//     case '1':
+//         marco1.formaVarilla = "plana";
+//         break;
+//     case '2':
+//         marco1.formaVarilla = "bombe";
+//         break;
+//     case '3':
+//         marco1.formaVarilla = "italiana";
+//         break;
+// }
+// //Verificar que el ancho de varilla esté en el listado de varillas
+// let varillasSeleccionadas = varillas.filter(item => item[0] === marco1.formaVarilla);
+// marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",false,true);
+// if(!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla)) {
+//     do {
+//         marco1.anchoVarilla = promptNumber("La varilla seleccionada no está disponible en ese ancho. Ingrese nuevamente.",false,true);}
+//     while (!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla))
+// }
+// ==========================================================================
+
 
 //====== Función para ordenar el listado de varillas ======
 function ordenarVarillas(indexCampo, ascendente=true){
@@ -105,60 +143,27 @@ class marco {
 
 //Cargado de tipos de varillas - Se tomarían desde una base de datos
 let varillas = [];
-varillas.push(["plana",1]);
-varillas.push(["plana",1.5]);
-varillas.push(["plana",2]);
-varillas.push(["plana",3]);
-varillas.push(["plana",4]);
-varillas.push(["plana",4.5]);
-varillas.push(["plana",6]);
-varillas.push(["plana",10]);
-varillas.push(["bombe",1]);
-varillas.push(["bombe",1.5]);
-varillas.push(["bombe",2]);
-varillas.push(["bombe",3]);
-varillas.push(["bombe",4]);
-varillas.push(["bombe",6]);
-varillas.push(["italiana",2]);
-varillas.push(["italiana",3]);
-varillas.push(["italiana",4]);
-varillas.push(["italiana",4.5]);
-varillas.push(["italiana",5.5]);
-varillas.push(["italiana",6]);
-varillas.push(["italiana",7]);
-
-// PROCESO OBSOLETO - EL CARGADO DE DATOS SERÍA A TRAVÉS DE LA INTERFAZ (NECESARIO EVENTOS)
-//
-// const marco1 = new marco(
-// promptNumber("Ingrese ancho del marco en centímetros",false,true),
-// promptNumber("Ingrese alto del marco en centímetros",false,true));
-// marco1.conVidrio = window.confirm("¿El marco lleva vidrio?");
-// marco1.conTapa = window.confirm("¿El marco lleva tapa?");
-// marco1.conEspejo = window.confirm("¿El marco lleva espejo?");
-// marco1.conPptBco = window.confirm("¿El marco lleva paspartú blanco?");
-// marco1.conPptCol = window.confirm("¿El marco lleva paspartú de color?");
-// do {marco1.formaVarilla = prompt("Ingrese forma de varilla\r1. Plana\r2. Bombé\r3. Italiana");}
-// while (marco1.formaVarilla != 1 && marco1.formaVarilla != 2 && marco1.formaVarilla != 3)
-// switch(marco1.formaVarilla){
-//     case '1':
-//         marco1.formaVarilla = "plana";
-//         break;
-//     case '2':
-//         marco1.formaVarilla = "bombe";
-//         break;
-//     case '3':
-//         marco1.formaVarilla = "italiana";
-//         break;
-// }
-// //Verificar que el ancho de varilla esté en el listado de varillas
-// let varillasSeleccionadas = varillas.filter(item => item[0] === marco1.formaVarilla);
-// marco1.anchoVarilla = promptNumber("Ingrese ancho de la varilla",false,true);
-// if(!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla)) {
-//     do {
-//         marco1.anchoVarilla = promptNumber("La varilla seleccionada no está disponible en ese ancho. Ingrese nuevamente.",false,true);}
-//     while (!varillasSeleccionadas.find(valor => valor[1]===marco1.anchoVarilla))
-// }
-
+varillas.push(["Plana",1]);
+varillas.push(["Plana",1.5]);
+varillas.push(["Plana",2]);
+varillas.push(["Plana",3]);
+varillas.push(["Plana",4]);
+varillas.push(["Plana",4.5]);
+varillas.push(["Plana",6]);
+varillas.push(["Plana",10]);
+varillas.push(["Bombe",1]);
+varillas.push(["Bombe",1.5]);
+varillas.push(["Bombe",2]);
+varillas.push(["Bombe",3]);
+varillas.push(["Bombe",4]);
+varillas.push(["Bombe",6]);
+varillas.push(["Italiana",2]);
+varillas.push(["Italiana",3]);
+varillas.push(["Italiana",4]);
+varillas.push(["Italiana",4.5]);
+varillas.push(["Italiana",5.5]);
+varillas.push(["Italiana",6]);
+varillas.push(["Italiana",7]);
 
 //Interacción con el DOM - Cargado de formas de varilla para el usuario
 let formasVarilla = [];
@@ -169,9 +174,12 @@ for(let i = 1; i < varillas.length; i++){
     }
 }
 for(let varilla of formasVarilla){
-    let opcion = document.createElement("li");
-    opcion.innerHTML = `<button class='btn btn-primary m-1'>${varilla}</button>`;
-    let selector = document.querySelector(".input-forma ul");
+    let opcion = document.createElement("button");
+    opcion.innerHTML = varilla;
+    opcion.classList.add('btn');
+    opcion.classList.add('btn-primary');
+    opcion.classList.add('m-1');
+    let selector = document.querySelector(".input-forma span");
     console.log(selector);
     selector.appendChild(opcion);
 }
