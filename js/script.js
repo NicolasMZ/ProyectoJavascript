@@ -139,9 +139,9 @@ class marco {
     }
 }
 
-//====== Main app ======
+//========== Main app ==========
 
-//Cargado de tipos de varillas - Se tomarían desde una base de datos
+//-----Cargado de tipos de varillas - Se tomarían desde una base de datos
 let varillas = [];
 varillas.push(["Plana",1]);
 varillas.push(["Plana",1.5]);
@@ -165,7 +165,7 @@ varillas.push(["Italiana",5.5]);
 varillas.push(["Italiana",6]);
 varillas.push(["Italiana",7]);
 
-//Interacción con el DOM - Cargado de formas de varilla para el usuario
+//-----Cargado de formas de varilla para el usuario-----
 let formasVarilla = [];
 formasVarilla[0]=varillas[0][0];
 for(let i = 1; i < varillas.length; i++){
@@ -179,10 +179,52 @@ for(let varilla of formasVarilla){
     opcion.classList.add('btn');
     opcion.classList.add('btn-primary');
     opcion.classList.add('m-1');
+    opcion.classList.add('b_formaVarilla');
     let selector = document.querySelector(".input-forma span");
-    console.log(selector);
     selector.appendChild(opcion);
 }
+
+//-----Selector de tipo de marco-----
+let input_tipoMarco = "";
+let b_espejo = document.getElementById("b-espejo");
+let b_enmarcado = document.getElementById("b-enmarcado");
+b_espejo.addEventListener("click", () => {
+    b_espejo.classList.add("active");
+    b_enmarcado.classList.remove("active");
+    input_tipoMarco = "Espejo";
+})
+b_enmarcado.addEventListener("click", () => {
+    b_enmarcado.classList.add("active");
+    b_espejo.classList.remove("active");
+    input_tipoMarco = "Enmarcado";
+})
+
+//-----Selector de forma de varilla-----
+let input_formaVarilla = "";
+let s_formas = document.getElementById("span-formasVarilla");
+s_formas.addEventListener("click",(e) => {
+    //Si tocó correctamente un botón...
+    if(e.target.innerHTML[0]!=="<"){
+    // ...limpiar el seleccionado previamente...
+        let b_formas = document.getElementsByClassName("b_formaVarilla");
+        for (i = 0; i < b_formas.length; i++) {
+            b_formas[i].classList.remove("active");
+            input_formaVarilla = "";
+        }
+    // ...y seleccionar según target.
+        e.target.classList.add("active");
+        input_formaVarilla = e.target.innerHTML;
+    };
+});
+
+
+// Selección de ancho de varilla
+// function actualizarAnchos(){
+//     let input_formaVarilla = document.querySelector(".input-forma active");
+//     console.log(input_formaVarilla);
+//     input_formaVarilla = input_formaVarilla.innerHTML;
+//     console.log(input_formaVarilla);
+// }
 
 
 // //Cálculo de precio
