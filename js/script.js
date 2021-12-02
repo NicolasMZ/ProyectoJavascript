@@ -238,10 +238,28 @@ s_formas.addEventListener("click",(e) => {
         opcion.classList.add('btn');
         opcion.classList.add('btn-primary');
         opcion.classList.add('m-1');
-        opcion.classList.add('b_formaVarilla');
+        opcion.classList.add('b_anchoVarilla');
         selector.appendChild(opcion);
     }
 });
+
+//-----Selector de ancho de varilla-----
+let input_anchoVarilla = "";
+let s_anchos = document.getElementById("span-anchosVarilla");
+s_anchos.addEventListener("click",(e) => {
+    //Si tocó correctamente un botón...
+    if(e.target.innerHTML[0]!=="<"){
+    // ...limpiar el seleccionado previamente...
+        let b_anchos = document.getElementsByClassName("b_anchoVarilla");
+        for (i = 0; i < b_anchos.length; i++) {
+            b_anchos[i].classList.remove("active");
+            input_anchoVarilla = "";
+        }
+    // ...y seleccionar según target.
+        e.target.classList.add("active");
+        input_anchoVarilla = e.target.innerHTML;
+    };
+})
 
 // //Cálculo de precio
 // marco1.mostrarPrecio();
