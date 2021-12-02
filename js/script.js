@@ -215,17 +215,33 @@ s_formas.addEventListener("click",(e) => {
         e.target.classList.add("active");
         input_formaVarilla = e.target.innerHTML;
     };
+    // Luego mostrar los anchos disponibles según selección:
+    // Obtener los anchos a mostrar, ...
+    let anchos = [];
+    for(let i = 0; i<varillas.length ; i++){
+        if(varillas[i][0]==input_formaVarilla){
+            anchos.push(varillas[i][1]);
+        }
+    }
+    // ...borrar los botones anteriores si los hubiere...
+    let selector = document.querySelector(".input-ancho span");
+    let cantHijos = selector.children.length;
+    if(cantHijos > 0){
+        for(i=0; i < cantHijos ; i++){
+            selector.firstChild.remove();
+        }
+    }
+    // ...y finalmente añadir los botones nuevos.
+    for(let ancho of anchos){
+        let opcion = document.createElement("button");
+        opcion.innerHTML = ancho;
+        opcion.classList.add('btn');
+        opcion.classList.add('btn-primary');
+        opcion.classList.add('m-1');
+        opcion.classList.add('b_formaVarilla');
+        selector.appendChild(opcion);
+    }
 });
-
-
-// Selección de ancho de varilla
-// function actualizarAnchos(){
-//     let input_formaVarilla = document.querySelector(".input-forma active");
-//     console.log(input_formaVarilla);
-//     input_formaVarilla = input_formaVarilla.innerHTML;
-//     console.log(input_formaVarilla);
-// }
-
 
 // //Cálculo de precio
 // marco1.mostrarPrecio();
