@@ -95,24 +95,17 @@ function ordenarVarillas(indexCampo, ascendente=true){
 
 //====== Clase para el cálculo de marcos ======
 class marco {
-    constructor(ancho,alto){
-        this.anchoMarco = ancho;
-        this.altoMarco = alto;
+    constructor(){
+        this.anchoMarco = 0;
+        this.altoMarco = 0;
         this.formaVarilla = 'plana';
         this.anchoVarilla = 1;
+        this.precioVarilla = 0;
         this.conVidrio = false;
         this.conTapa = false;
         this.conEspejo = false;
         this.conPptBco = false;
         this.conPptCol = false;
-    }
-
-    precioMetroLineal(){
-        switch(this.formaVarilla){
-            case 'plana': return 100*this.anchoVarilla;
-            case 'bombe': return 150*this.anchoVarilla;
-            case 'italiana': return 200*this.anchoVarilla;
-        }
     }
     
     precioMetroCuadrado(){
@@ -132,7 +125,7 @@ class marco {
         if(this.conPptBco){resultado = resultado + ", con paspartú blanco"};
         if(this.conPptCol){resultado = resultado + ", con paspartú de color"};
 
-        let precioLineal = (this.anchoMarco + this.altoMarco)/50 * this.precioMetroLineal();
+        let precioLineal = (this.anchoMarco + this.altoMarco)/50 * this.precioVarilla;
         let precioArea = this.anchoMarco*this.altoMarco/10000 * this.precioMetroCuadrado();
 
         alert(`${resultado}.\r\rEl precio final es de $ ${precioLineal + precioArea}`)
@@ -143,27 +136,27 @@ class marco {
 
 //-----Cargado de tipos de varillas - Se tomarían desde una base de datos
 let varillas = [];
-varillas.push(["Plana",1]);
-varillas.push(["Plana",1.5]);
-varillas.push(["Plana",2]);
-varillas.push(["Plana",3]);
-varillas.push(["Plana",4]);
-varillas.push(["Plana",4.5]);
-varillas.push(["Plana",6]);
-varillas.push(["Plana",10]);
-varillas.push(["Bombe",1]);
-varillas.push(["Bombe",1.5]);
-varillas.push(["Bombe",2]);
-varillas.push(["Bombe",3]);
-varillas.push(["Bombe",4]);
-varillas.push(["Bombe",6]);
-varillas.push(["Italiana",2]);
-varillas.push(["Italiana",3]);
-varillas.push(["Italiana",4]);
-varillas.push(["Italiana",4.5]);
-varillas.push(["Italiana",5.5]);
-varillas.push(["Italiana",6]);
-varillas.push(["Italiana",7]);
+varillas.push(["Plana",1,       390]);
+varillas.push(["Plana",1.5,     390]);
+varillas.push(["Plana",2,       500]);
+varillas.push(["Plana",3,       590]);
+varillas.push(["Plana",4,       650]);
+varillas.push(["Plana",4.5,     800]);
+varillas.push(["Plana",6,       1140]);
+varillas.push(["Plana",10,      2030]);
+varillas.push(["Bombe",1,       390]);
+varillas.push(["Bombe",1.5,     390]);
+varillas.push(["Bombe",2,       500]);
+varillas.push(["Bombe",3,       790]);
+varillas.push(["Bombe",4,       950]);
+varillas.push(["Bombe",6,       1250]);
+varillas.push(["Italiana",2,    540]);
+varillas.push(["Italiana",3,    800]);
+varillas.push(["Italiana",4,    1160]);
+varillas.push(["Italiana",4.5,  1160]);
+varillas.push(["Italiana",5.5,  1255]);
+varillas.push(["Italiana",6,    1454]);
+varillas.push(["Italiana",7,    1521]);
 
 //-----Cargado de formas de varilla para el usuario-----
 let formasVarilla = [];
@@ -191,11 +184,15 @@ let b_enmarcado = document.getElementById("b-enmarcado");
 b_espejo.addEventListener("click", () => {
     b_espejo.classList.add("active");
     b_enmarcado.classList.remove("active");
+    b_espejo.classList.remove("invalid");
+    b_enmarcado.classList.remove("invalid");
     input_tipoMarco = "Espejo";
 })
 b_enmarcado.addEventListener("click", () => {
     b_enmarcado.classList.add("active");
     b_espejo.classList.remove("active");
+    b_espejo.classList.remove("invalid");
+    b_enmarcado.classList.remove("invalid");
     input_tipoMarco = "Enmarcado";
 })
 
@@ -209,6 +206,7 @@ s_formas.addEventListener("click",(e) => {
         let b_formas = document.getElementsByClassName("b_formaVarilla");
         for (i = 0; i < b_formas.length; i++) {
             b_formas[i].classList.remove("active");
+            b_formas[i].classList.remove("invalid");
             input_formaVarilla = "";
         }
     // ...y seleccionar según target.
@@ -253,6 +251,7 @@ s_anchos.addEventListener("click",(e) => {
         let b_anchos = document.getElementsByClassName("b_anchoVarilla");
         for (i = 0; i < b_anchos.length; i++) {
             b_anchos[i].classList.remove("active");
+            b_anchos[i].classList.remove("invalid");
             input_anchoVarilla = "";
         }
     // ...y seleccionar según target.
@@ -261,8 +260,72 @@ s_anchos.addEventListener("click",(e) => {
     };
 })
 
-// //Cálculo de precio
-// marco1.mostrarPrecio();
+//-----Input de ancho y alto de marco-----
+let input_anchoMarco = "";
+let input_altoMarco = "";
+let s_alto = document.getElementById("input_altoMarco");
+s_alto.addEventListener("change", () => {
+    s_alto.classList.remove("invalid");
+})
+let s_ancho = document.getElementById("input_anchoMarco");
+s_ancho.addEventListener("change", () => {
+    s_ancho.classList.remove("invalid");
+})
+
+//-----Calculo de precio-----
+let selector = document.getElementById("btn-calcular");
+selector.addEventListener("click", () => {
+    input_anchoMarco = parseFloat(document.getElementById("input_altoMarco").value);
+    input_altoMarco = parseFloat(document.getElementById("input_anchoMarco").value);
+    // Si todos los inputs tienen valor, calcular precio.
+    if(input_anchoMarco && input_altoMarco && input_formaVarilla && input_anchoVarilla && input_tipoMarco){
+        let marco1 = new marco();
+        marco1.altoMarco = input_altoMarco;
+        marco1.anchoMarco = input_anchoMarco;
+        marco1.anchoVarilla = input_anchoVarilla;
+        marco1.formaVarilla = input_formaVarilla;
+        marco1.precioVarilla = varillas.find(valor => valor[0] == input_formaVarilla && valor[1] == input_anchoVarilla)[2];
+        switch(input_tipoMarco){
+            case 'Enmarcado':
+                marco1.conTapa = true;
+                marco1.conVidrio = true;
+                break;
+            case 'Espejo':
+                marco1.conTapa = true;
+                marco1.conEspejo = true;
+                break;
+        }
+
+        marco1.mostrarPrecio();
+    } 
+    else { // Sino, mostrar donde hay error
+        if(isNaN(input_anchoMarco) || input_anchoMarco <= 0){
+            document.getElementById("input_anchoMarco").classList.add("invalid")
+        }
+        if(isNaN(input_altoMarco) || input_altoMarco <= 0){
+            document.getElementById("input_altoMarco").classList.add("invalid")
+        }
+        if(input_formaVarilla === ""){
+            selector = document.getElementsByClassName("b_formaVarilla")
+            for(i=0 ; i<selector.length ; i++){
+                selector[i].classList.add("invalid");
+            }
+        }
+        if(input_anchoVarilla === ""){
+            selector = document.getElementsByClassName("b_anchoVarilla")
+            for(i=0 ; i<selector.length ; i++){
+                selector[i].classList.add("invalid");
+            }
+        }
+        if(input_tipoMarco === ""){
+            selector = document.getElementsByClassName("b_tipoMarco");
+            for(i=0 ; i<selector.length ; i++){
+                selector[i].classList.add("invalid");
+            }
+        }
+    }
+});
+
 // ordenarVarillas(0,true);
 // ordenarVarillas(0,false);
 // ordenarVarillas(1,true);

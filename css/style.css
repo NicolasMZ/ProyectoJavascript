@@ -13,3 +13,7 @@ main section{
     background-position: center;
     background-size: cover;
 }
+
+.invalid{
+    outline: rgb(255, 71, 71) solid 5px;
+}

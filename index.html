@@ -27,13 +27,13 @@
         <section class="col-md-6 section-heading">
             <div class="input-tipo p-5">
                 <h3 class="section-heading-upper">Tipo de marco</h3>
-                <button class="btn btn-primary" id="b-espejo">Espejo</button>
-                <button class="btn btn-primary" id="b-enmarcado">Enmarcado</button>
+                <button class="btn btn-primary b_tipoMarco" id="b-espejo">Espejo</button>
+                <button class="btn btn-primary b_tipoMarco" id="b-enmarcado">Enmarcado</button>
             </div>
             <div class="input-medida p-5">
                 <h3 class="section-heading-upper">Medida de la imagen o espejo (sin marco)</h3>
-                Alto: <input type="text" name="Alto" id="">
-                Ancho: <input type="text" name="Ancho" id="">
+                Alto: <input type="number" name="Alto" id="input_altoMarco">
+                Ancho: <input type="number" name="Ancho" id="input_anchoMarco">
             </div>
             <div class="input-forma p-5">
                 <h3 class="section-heading-upper">Forma de varilla</h3>
@@ -44,7 +44,7 @@
                 <span id="span-anchosVarilla"></span>
             </div>
             <div class="text-center">
-                <button class="btn btn-primary">Calcular</button>
+                <button class="btn btn-primary" id="btn-calcular">Calcular</button>
             </div>
 
         </section>
