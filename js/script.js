@@ -107,6 +107,7 @@ class marco {
         this.conEspejo = false;
         this.conPptBco = false;
         this.conPptCol = false;
+        this.fecha = "";
     }
     
     precioMetroCuadrado(){
@@ -124,11 +125,13 @@ class marco {
         let precio = (precioLineal + precioArea).toFixed(2);
 
         let d = new Date();
+        this.fecha = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
         let texto =
         "*********************<br>"+
         "PRESUPUESTO NO VALIDO<br>"+
         "COMO TICKET O FACTURA<br>"+
-        `FECHA: ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}<br>`+
+        `FECHA: ${this.fecha}<br>`+
         "*********************<br><br>"+
         `${this.tipoMarco} medida:<br>`+
         `${this.anchoMarco} x ${this.altoMarco} cm.<br><br>`+
@@ -145,6 +148,19 @@ class marco {
 
         let selector = document.getElementById("receipt");
         selector.children[0].innerHTML = texto;
+    }
+
+    agregarLocalStorage(){
+        // Guarda los ultimos 10 presupuestos
+        let historial = JSON.parse(localStorage.getItem("Historial"));
+        if(historial === null){
+            historial = [];
+        }
+        while(historial.length > 9){
+            historial.shift();
+        }
+        historial.push(this);
+        localStorage.setItem("Historial", JSON.stringify(historial));
     }
 }
 
@@ -231,6 +247,7 @@ s_formas.addEventListener("click",(e) => {
     };
     // Luego mostrar los anchos disponibles según selección:
     // Obtener los anchos a mostrar, ...
+    input_anchoVarilla = "";
     let anchos = [];
     for(let i = 0; i<varillas.length ; i++){
         if(varillas[i][0]==input_formaVarilla){
@@ -314,6 +331,7 @@ selector.addEventListener("click", () => {
         }
 
         marco1.mostrarPrecio();
+        marco1.agregarLocalStorage();
     } 
     else { // Sino, mostrar donde hay error
         if(isNaN(input_anchoMarco) || input_anchoMarco <= 0){
@@ -343,8 +361,7 @@ selector.addEventListener("click", () => {
     }
 });
 
-let marcosss = new marco;
-marcosss.mostrarPrecio();
+
 // ordenarVarillas(0,true);
 // ordenarVarillas(0,false);
 // ordenarVarillas(1,true);
