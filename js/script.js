@@ -96,6 +96,7 @@ function ordenarVarillas(indexCampo, ascendente=true){
 //====== Clase para el cálculo de marcos ======
 class marco {
     constructor(){
+        this.tipoMarco = "";
         this.anchoMarco = 0;
         this.altoMarco = 0;
         this.formaVarilla = 'plana';
@@ -118,17 +119,32 @@ class marco {
     }
     
     mostrarPrecio(){
-        let resultado = `Presupuesto por marco medida ${this.anchoMarco} por ${this.altoMarco} con varilla ${this.formaVarilla} de ${this.anchoVarilla} cm.`
-        if(this.conVidrio){resultado = resultado + ", con vidrio"};
-        if(this.conTapa){resultado = resultado + ", con tapa"};
-        if(this.conEspejo){resultado = resultado + ", con espejo"};
-        if(this.conPptBco){resultado = resultado + ", con paspartú blanco"};
-        if(this.conPptCol){resultado = resultado + ", con paspartú de color"};
-
         let precioLineal = (this.anchoMarco + this.altoMarco)/50 * this.precioVarilla;
         let precioArea = this.anchoMarco*this.altoMarco/10000 * this.precioMetroCuadrado();
+        let precio = (precioLineal + precioArea).toFixed(2);
 
-        alert(`${resultado}.\r\rEl precio final es de $ ${precioLineal + precioArea}`)
+        let d = new Date();
+        let texto =
+        "*********************<br>"+
+        "PRESUPUESTO NO VALIDO<br>"+
+        "COMO TICKET O FACTURA<br>"+
+        `FECHA: ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}<br>`+
+        "*********************<br><br>"+
+        `${this.tipoMarco} medida:<br>`+
+        `${this.anchoMarco} x ${this.altoMarco} cm.<br><br>`+
+        `Varilla: ${this.formaVarilla}<br>`+
+        `Ancho: ${this.anchoVarilla} cm.<br><br>`;
+        if(this.conVidrio){texto = texto + "&nbsp+ Vidrio<br>"};
+        if(this.conTapa){texto = texto + "&nbsp+ Tapa<br>"};
+        if(this.conEspejo){texto = texto + "&nbsp+ Espejo<br>"};
+        if(this.conPptBco){texto = texto + "&nbsp+ Paspartu blanco<br>"};
+        if(this.conPptCol){texto = texto + "&nbsp+ Paspartu de color<br>"};
+        texto = texto +
+        `<br>*********************<br>`+
+        `<br><h5 class='text-end'>Total $ ${precio}&nbsp</h5>`
+
+        let selector = document.getElementById("receipt");
+        selector.children[0].innerHTML = texto;
     }
 }
 
@@ -280,6 +296,7 @@ selector.addEventListener("click", () => {
     // Si todos los inputs tienen valor, calcular precio.
     if(input_anchoMarco && input_altoMarco && input_formaVarilla && input_anchoVarilla && input_tipoMarco){
         let marco1 = new marco();
+        marco1.tipoMarco = input_tipoMarco;
         marco1.altoMarco = input_altoMarco;
         marco1.anchoMarco = input_anchoMarco;
         marco1.anchoVarilla = input_anchoVarilla;
@@ -326,6 +343,8 @@ selector.addEventListener("click", () => {
     }
 });
 
+let marcosss = new marco;
+marcosss.mostrarPrecio();
 // ordenarVarillas(0,true);
 // ordenarVarillas(0,false);
 // ordenarVarillas(1,true);

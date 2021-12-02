@@ -1,3 +1,8 @@
+@font-face {
+    font-family: receiptRegular;
+    src: url(../assets/fonts/Receiptional_Receipt_Regular.ttf);
+  }
+
 header {
     background-image: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url("../assets/img/header.jpg");
     background-attachment: fixed;
@@ -6,12 +11,39 @@ header {
     min-height: 100vh;
 }
 
-main section{
+.section-heading {
     min-height: 100vh;
     background-image: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url("../assets/img/main.jpg");
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
+}
+
+.results {
+    min-height: 90vh;
+    background-image: linear-gradient(rgba(211, 204, 202, 0.65), rgba(83, 72, 72, 0.65)), url("../assets/img/results-bg.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+#receipt {
+    font-family: receiptRegular;
+    background-color: white;
+    width: 300px;
+
+    border:rgba(51, 49, 48, 0.65) solid 4px;
+    border-bottom-style: dotted;
+    border-bottom-width: 6px;
+    border-top-right-radius: 30px;
+}
+
+#receipt h5{
+    font-family: receiptRegular;
+}
+
+.footer{
+    max-height: 10vh;
 }
 
 .invalid{
