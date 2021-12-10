@@ -146,8 +146,7 @@ class marco {
         `<br>*********************<br>`+
         `<br><h5 class='text-end'>Total $ ${precio}&nbsp</h5>`
 
-        let selector = document.getElementById("receipt");
-        selector.children[0].innerHTML = texto;
+        $("#receipt:nth-child(1)").html(texto);
     }
 
     agregarLocalStorage(){
@@ -199,51 +198,38 @@ for(let i = 1; i < varillas.length; i++){
     }
 }
 for(let varilla of formasVarilla){
-    let opcion = document.createElement("button");
-    opcion.innerHTML = varilla;
-    opcion.classList.add('btn');
-    opcion.classList.add('btn-primary');
-    opcion.classList.add('m-1');
-    opcion.classList.add('b_formaVarilla');
-    let selector = document.querySelector(".input-forma span");
-    selector.appendChild(opcion);
+    $(".input-forma span").append(`
+        <button class='btn btn-primary m-1 b_formaVarilla'>${varilla}</button>`);
 }
 
 //-----Selector de tipo de marco-----
 let input_tipoMarco = "";
-let b_espejo = document.getElementById("b-espejo");
-let b_enmarcado = document.getElementById("b-enmarcado");
-b_espejo.addEventListener("click", () => {
-    b_espejo.classList.add("active");
-    b_enmarcado.classList.remove("active");
-    b_espejo.classList.remove("invalid");
-    b_enmarcado.classList.remove("invalid");
+$("#b-espejo").click( () => {
+    $("#b-espejo").addClass("active");
+    $("#b-espejo").removeClass("invalid");
+    $("#b-enmarcado").removeClass("active invalid");
     input_tipoMarco = "Espejo";
 })
-b_enmarcado.addEventListener("click", () => {
-    b_enmarcado.classList.add("active");
-    b_espejo.classList.remove("active");
-    b_espejo.classList.remove("invalid");
-    b_enmarcado.classList.remove("invalid");
+$("#b-enmarcado").click( () => {
+    $("#b-enmarcado").addClass("active");
+    $("#b-enmarcado").removeClass("invalid");
+    $("#b-espejo").removeClass("active invalid");
     input_tipoMarco = "Enmarcado";
 })
 
 //-----Selector de forma de varilla-----
 let input_formaVarilla = "";
-let s_formas = document.getElementById("span-formasVarilla");
-s_formas.addEventListener("click",(e) => {
+$("#span-formasVarilla").click( (e) => {
     //Si tocó correctamente un botón...
     if(e.target.innerHTML[0]!=="<"){
     // ...limpiar el seleccionado previamente...
-        let b_formas = document.getElementsByClassName("b_formaVarilla");
-        for (i = 0; i < b_formas.length; i++) {
-            b_formas[i].classList.remove("active");
-            b_formas[i].classList.remove("invalid");
+        $(".b_formaVarilla").each( (i, varilla) => {
+            $(varilla).removeClass("active invalid");
             input_formaVarilla = "";
-        }
+        })
     // ...y seleccionar según target.
-        e.target.classList.add("active");
-        input_formaVarilla = e.target.innerHTML;
+        $(e.target).addClass("active");
+        input_formaVarilla = $(e.target).html();
     };
     // Luego mostrar los anchos disponibles según selección:
     // Obtener los anchos a mostrar, ...
@@ -251,44 +237,29 @@ s_formas.addEventListener("click",(e) => {
     let anchos = [];
     for(let i = 0; i<varillas.length ; i++){
         if(varillas[i][0]==input_formaVarilla){
-            anchos.push(varillas[i][1]);
-        }
+            anchos.push(varillas[i][1]);}
     }
     // ...borrar los botones anteriores si los hubiere...
-    let selector = document.querySelector(".input-ancho span");
-    let cantHijos = selector.children.length;
-    if(cantHijos > 0){
-        for(i=0; i < cantHijos ; i++){
-            selector.firstChild.remove();
-        }
-    }
+    $(".b_anchoVarilla").remove();
     // ...y finalmente añadir los botones nuevos.
     for(let ancho of anchos){
-        let opcion = document.createElement("button");
-        opcion.innerHTML = ancho;
-        opcion.classList.add('btn');
-        opcion.classList.add('btn-primary');
-        opcion.classList.add('m-1');
-        opcion.classList.add('b_anchoVarilla');
-        selector.appendChild(opcion);
+        $("#span-anchosVarilla").append(`
+            <button class='btn btn-primary m-1 b_anchoVarilla'>${ancho}</button>`);
     }
 });
 
 //-----Selector de ancho de varilla-----
 let input_anchoVarilla = "";
-let s_anchos = document.getElementById("span-anchosVarilla");
-s_anchos.addEventListener("click",(e) => {
+$("#span-anchosVarilla").click( (e) => {
     //Si tocó correctamente un botón...
-    if(e.target.innerHTML[0]!=="<"){
+    if(e.target.html!=="<"){
     // ...limpiar el seleccionado previamente...
-        let b_anchos = document.getElementsByClassName("b_anchoVarilla");
-        for (i = 0; i < b_anchos.length; i++) {
-            b_anchos[i].classList.remove("active");
-            b_anchos[i].classList.remove("invalid");
+        $(".b_anchoVarilla").each( (index,element) => {
+            $(element).removeClass("active invalid");
             input_anchoVarilla = "";
-        }
+        })
     // ...y seleccionar según target.
-        e.target.classList.add("active");
+        $(e.target).addClass("active");
         input_anchoVarilla = e.target.innerHTML;
     };
 })
@@ -296,20 +267,14 @@ s_anchos.addEventListener("click",(e) => {
 //-----Input de ancho y alto de marco-----
 let input_anchoMarco = "";
 let input_altoMarco = "";
-let s_alto = document.getElementById("input_altoMarco");
-s_alto.addEventListener("change", () => {
-    s_alto.classList.remove("invalid");
-})
-let s_ancho = document.getElementById("input_anchoMarco");
-s_ancho.addEventListener("change", () => {
-    s_ancho.classList.remove("invalid");
+$(".input-medida input").change( (e) => {
+    $(e.target).removeClass("invalid");
 })
 
 //-----Calculo de precio-----
-let selector = document.getElementById("btn-calcular");
-selector.addEventListener("click", () => {
-    input_anchoMarco = parseFloat(document.getElementById("input_altoMarco").value);
-    input_altoMarco = parseFloat(document.getElementById("input_anchoMarco").value);
+$("#btn-calcular").click( () => {
+    input_anchoMarco = parseFloat($("#input_anchoMarco").val());
+    input_altoMarco = parseFloat($("#input_altoMarco").val());
     // Si todos los inputs tienen valor, calcular precio.
     if(input_anchoMarco && input_altoMarco && input_formaVarilla && input_anchoVarilla && input_tipoMarco){
         let marco1 = new marco();
@@ -334,35 +299,27 @@ selector.addEventListener("click", () => {
         marco1.agregarLocalStorage();
     } 
     else { // Sino, mostrar donde hay error
+        if(input_tipoMarco === ""){
+            $(".b_tipoMarco").each((i,e)=>{
+                $(e).addClass("invalid");
+            })
+        }
         if(isNaN(input_anchoMarco) || input_anchoMarco <= 0){
-            document.getElementById("input_anchoMarco").classList.add("invalid")
+            $("#input_anchoMarco").addClass("invalid");
         }
         if(isNaN(input_altoMarco) || input_altoMarco <= 0){
-            document.getElementById("input_altoMarco").classList.add("invalid")
+            $("#input_altoMarco").addClass("invalid");
         }
         if(input_formaVarilla === ""){
-            selector = document.getElementsByClassName("b_formaVarilla")
-            for(i=0 ; i<selector.length ; i++){
-                selector[i].classList.add("invalid");
-            }
+            
+            $(".b_formaVarilla").each((i,e)=>{
+                $(e).addClass("invalid");
+            })
         }
         if(input_anchoVarilla === ""){
-            selector = document.getElementsByClassName("b_anchoVarilla")
-            for(i=0 ; i<selector.length ; i++){
-                selector[i].classList.add("invalid");
-            }
-        }
-        if(input_tipoMarco === ""){
-            selector = document.getElementsByClassName("b_tipoMarco");
-            for(i=0 ; i<selector.length ; i++){
-                selector[i].classList.add("invalid");
-            }
+            $(".b_anchoVarilla").each((i,e)=>{
+                $(e).addClass("invalid");
+            })
         }
     }
 });
-
-
-// ordenarVarillas(0,true);
-// ordenarVarillas(0,false);
-// ordenarVarillas(1,true);
-// ordenarVarillas(1,false);
