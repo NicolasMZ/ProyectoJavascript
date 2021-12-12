@@ -24,27 +24,39 @@
     </header>
     
     <main class="row">
-        <section class="col-md-6 section-heading">
-            <div class="input-tipo p-5">
-                <h3 class="section-heading-upper">Tipo de marco</h3>
-                <button class="btn btn-primary b_tipoMarco" id="b-espejo">Espejo</button>
-                <button class="btn btn-primary b_tipoMarco" id="b-enmarcado">Enmarcado</button>
+        <section class="col-md-6 section-heading px-5">
+            <div class="input-tipo p-4">
+                <h3 class="section-heading-upper fs-3">Tipo de marco</h3>
+                <button class="btn btn-primary b_tipoMarco fs-5 m-2" id="b-espejo">Espejo</button>
+                <button class="btn btn-primary b_tipoMarco fs-5 m-2" id="b-enmarcado">Enmarcado</button>
             </div>
-            <div class="input-medida p-5">
-                <h3 class="section-heading-upper">Medida de la imagen o espejo (sin marco)</h3>
-                Alto: <input type="number" name="Alto" id="input_altoMarco">
-                Ancho: <input type="number" name="Ancho" id="input_anchoMarco">
+            <div class="input-medida p-4 row">
+                <h3 class="section-heading-upper fs-3">Medida interna (sin marco)</h3>
+                <span class="col-6 fs-5 p-3">
+                    <label for="input_altoMarco" class="row">Alto:</label>
+                    <span class="row">
+                        <input type="number" name="Alto" id="input_altoMarco" class="col-sm-8 text-end">
+                        <p class="col-sm-4">cm.</p>
+                    </span>
+                </span>
+                <span class="col-6 fs-4 p-3">
+                    <label for="input_anchoMarco" class="row">Ancho:</label>
+                    <span class="row">
+                        <input type="number" name="Ancho" id="input_anchoMarco" class="col-sm-8 text-end">
+                        <p class="col-sm-4">cm.</p>
+                    </span>
+                </span>
             </div>
-            <div class="input-forma p-5">
-                <h3 class="section-heading-upper">Forma de varilla</h3>
+            <div class="input-forma p-4 fs-4 row">
+                <h3 class="section-heading-upper fs-3">Forma de varilla</h3>
                 <span id="span-formasVarilla"></span>
             </div>
-            <div class="input-ancho p-5">
-                <h3 class="section-heading-upper">Ancho de varilla</h3>
+            <div class="input-ancho p-4 fs-4 row">
+                <h3 class="section-heading-upper fs-3">Ancho de varilla (cm.)</h3>
                 <span id="span-anchosVarilla"></span>
             </div>
             <div class="text-center">
-                <button class="btn btn-primary" id="btn-calcular">Calcular</button>
+                <button class="btn btn-primary fs-5 p-3 mb-5" id="btn-calcular">Calcular</button>
             </div>
 
         </section>
