@@ -20,18 +20,18 @@
         <div class="site-heading text-primary">
             <h1 class="site-heading-upper mb-3">Enmarcados personalizados</h1>
             <h2 class="site-heading-lower text-faded">Diseño y calidad</h2>
-            <button class="btn btn-secondary fs-4 mt-5">Comenzar</button>
+            <button id="btn-comenzar" class="btn btn-secondary fs-4 mt-5">Comenzar</button>
         </div>
     </header>
     
     <main class="row g-0">
-        <section class="col-md-6 section-heading p-sm-5 text-center">
-            <div class="input-tipo container-sm">
-                <h3 class="section-heading-upper fs-3 m-2">Tipo de marco</h3>
+        <section class="col-md-6 section-heading px-sm-5 text-center">
+            <div class="mt-5 container-sm">
+                <h3 class="section-heading-upper fs-3">Tipo de marco</h3>
                 <button class="btn btn-primary b_tipoMarco fs-5 m-2" id="b-espejo">Espejo</button>
                 <button class="btn btn-primary b_tipoMarco fs-5 m-2" id="b-enmarcado">Enmarcado</button>
             </div>
-            <div class="input-medida container-sm row g-0 mt-5">
+            <div class="input-medida mt-5 container-sm">
                 <h3 class="section-heading-upper fs-3">Medida interna (sin marco - cm.)</h3>
                 <div class="d-flex justify-content-center">
                     <span class="fs-4 m-3">
@@ -44,13 +44,13 @@
                     </span>
                 </div>
             </div>
-            <div class="input-forma container-sm fs-4 row g-0 mt-5">
+            <div class="input-forma container-sm fs-4 mt-5">
                 <h3 class="section-heading-upper fs-3">Forma de varilla</h3>
                 <span id="span-formasVarilla"></span>
             </div>
             <div class="input-ancho container-sm fs-4 row g-0 mt-5">
                 <h3 class="section-heading-upper fs-3">Ancho de varilla (cm.)</h3>
-                <span id="span-anchosVarilla"></span>
+                <span id="span-anchosVarilla" style="opacity: 0;"></span>
             </div>
             <div class="text-center">
                 <button class="btn btn-primary fs-5 p-3 mb-5" id="btn-calcular">Calcular</button>
@@ -58,23 +58,17 @@
 
         </section>
     
-        <aside class="sidePreview col-md-6">
-            <img src="" alt="" class="framePreview">
-        </aside>
-    </main>
-
-    <section class="results row g-0">
-        <div class="col-md-5 gy-5">
+        <aside id="results" class="d-flex justify-content-center align-items-center col-md-6">
             <div class="container-sm p-4" id="receipt">
                 <p class="mt-3"></p>
             </div>
-        </div>
-        <div class="contactForm col-md-7">
-            <form action="" method="get">
-                <button class="submit"></button>
-            </form>
-            
-        </div>
+        </aside>
+    </main>
+
+    <section id="contactForm">
+        <form action="" method="get">
+            <button class="submit"></button>
+        </form>
     </section>
     
     <footer class="row g-0 footer text-faded text-center py-5">

@@ -221,38 +221,41 @@ $("#b-enmarcado").click( () => {
 let input_formaVarilla = "";
 $("#span-formasVarilla").click( (e) => {
     //Si tocó correctamente un botón...
-    if(e.target.innerHTML[0]!=="<"){
+    if(e.target.children.length==0){
     // ...limpiar el seleccionado previamente...
         $(".b_formaVarilla").each( (i, varilla) => {
             $(varilla).removeClass("active invalid");
             input_formaVarilla = "";
         })
-    // ...y seleccionar según target.
+        // ...y seleccionar según target.
         $(e.target).addClass("active");
         input_formaVarilla = $(e.target).html();
+        // Luego mostrar los anchos disponibles según selección:
+        // Obtener los anchos a mostrar, ...
+        input_anchoVarilla = "";
+        let anchos = [];
+        for(let i = 0; i<varillas.length ; i++){
+            if(varillas[i][0]==input_formaVarilla){
+                anchos.push(varillas[i][1]);}
+        }
+        // ...borrar los botones anteriores si los hubiere...
+        $("#span-anchosVarilla").animate({opacity: 0},200, () => {
+            $(".b_anchoVarilla").remove();
+            // ...y finalmente añadir los botones nuevos.
+            for(let ancho of anchos){
+                $("#span-anchosVarilla").append(`
+                    <button class='btn btn-primary m-1 b_anchoVarilla'>${ancho}</button>`);
+            }
+            $("#span-anchosVarilla").animate({opacity: 1},200)
+        })
     };
-    // Luego mostrar los anchos disponibles según selección:
-    // Obtener los anchos a mostrar, ...
-    input_anchoVarilla = "";
-    let anchos = [];
-    for(let i = 0; i<varillas.length ; i++){
-        if(varillas[i][0]==input_formaVarilla){
-            anchos.push(varillas[i][1]);}
-    }
-    // ...borrar los botones anteriores si los hubiere...
-    $(".b_anchoVarilla").remove();
-    // ...y finalmente añadir los botones nuevos.
-    for(let ancho of anchos){
-        $("#span-anchosVarilla").append(`
-            <button class='btn btn-primary m-1 b_anchoVarilla'>${ancho}</button>`);
-    }
 });
 
 //-----Selector de ancho de varilla-----
 let input_anchoVarilla = "";
 $("#span-anchosVarilla").click( (e) => {
     //Si tocó correctamente un botón...
-    if(e.target.html!=="<"){
+    if(!isNaN(e.target.innerHTML)){
     // ...limpiar el seleccionado previamente...
         $(".b_anchoVarilla").each( (index,element) => {
             $(element).removeClass("active invalid");
@@ -273,6 +276,9 @@ $(".input-medida input").change( (e) => {
 
 //-----Calculo de precio-----
 $("#btn-calcular").click( () => {
+    // Ocultar el recibo si ya hay uno
+    inicializacion();
+
     input_anchoMarco = parseFloat($("#input_anchoMarco").val());
     input_altoMarco = parseFloat($("#input_altoMarco").val());
     // Si todos los inputs tienen valor, calcular precio.
@@ -294,11 +300,12 @@ $("#btn-calcular").click( () => {
                 marco1.conEspejo = true;
                 break;
         }
-
+        // Armar el recibo, cargar al historial y animar.
         marco1.mostrarPrecio();
         marco1.agregarLocalStorage();
-    } 
-    else { // Sino, mostrar donde hay error
+        animarTicket();
+        
+    } else { // Sino, mostrar donde hay error
         if(input_tipoMarco === ""){
             $(".b_tipoMarco").each((i,e)=>{
                 $(e).addClass("invalid");
@@ -323,3 +330,35 @@ $("#btn-calcular").click( () => {
         }
     }
 });
+
+//-----Animaciones-----
+$("#btn-comenzar").click(()=>{
+    $("html").animate({
+        scrollTop: $("main").offset().top
+    },0)
+})
+
+function animarTicket(){
+    $("#results").css({
+        "display": "",
+        "min-height": "100vh"
+    });
+    $("html").animate( {scrollTop: $("#results").offset().top,} , 0 , ()=>{
+        $("#receipt").delay(300).slideDown(1000);
+    })
+}
+
+//-----Al cargar la página-----
+$(document).ready(inicializacion());
+
+function inicializacion() {
+    $("#receipt").css("display", "none");
+
+    // Esconder aside de resultados si se está en mobile para evitar espacio en blanco
+    if($(window).width()<768){
+        $("#results").css({
+            "display": "none",
+            "min-height": 0
+        });
+    }
+}
