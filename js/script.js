@@ -332,6 +332,7 @@ $("#btn-calcular").click( () => {
 });
 
 //-----Animaciones-----
+
 $("#btn-comenzar").click(()=>{
     $("html").animate({
         scrollTop: $("main").offset().top
@@ -344,7 +345,26 @@ function animarTicket(){
         "min-height": "100vh"
     });
     $("html").animate( {scrollTop: $("#results").offset().top,} , 0 , ()=>{
-        $("#receipt").delay(300).slideDown(1000);
+        
+        $("#results").append(`<img id="img-calc1" class="position-absolute" style="display: none;" src="./assets/img/IconMath1.png">`);
+        $("#results").append(`<img id="img-calc2" class="position-absolute" style="display: none;" src="./assets/img/IconMath2.png">`);
+        $("#results").append(`<img id="img-calc3" class="position-absolute" style="display: none;" src="./assets/img/IconMath3.png">`);
+        $("#results").append(`<img id="img-calc4" class="position-absolute" style="display: none;" src="./assets/img/IconMath4.png">`);
+        $("#results").append(`<img id="img-calc5" class="position-absolute" style="display: none;" src="./assets/img/IconMath5.png">`);
+        
+        $("#img-calc1").delay(300).show(0).delay(300).hide(0);
+        $("#img-calc2").delay(600).show(0).delay(300).hide(0);
+        $("#img-calc3").delay(900).show(0).delay(300).hide(0);
+        $("#img-calc4").delay(1200).show(0).delay(300).hide(0);
+        $("#img-calc5").delay(1500).show(0).delay(1200).hide(200);
+
+        $("#receipt").delay(2700).slideDown(1000,()=>{
+            $("#img-calc1").remove();
+            $("#img-calc2").remove();
+            $("#img-calc3").remove();
+            $("#img-calc4").remove();
+            $("#img-calc5").remove();
+        });        
     })
 }
 
