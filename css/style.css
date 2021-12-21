@@ -22,11 +22,12 @@ header {
     border:rgba(211, 204, 202, 0.65) solid 2px;
 }
 
-#span-anchosVarilla {
+#anchosVarilla {
     min-height: 130px;
+    min-width: 100px;
 }
 
-.section-heading {
+#marcoForm {
     min-height: 100vh;
     background-image: linear-gradient(rgba(109, 67, 52, 0.644), rgba(47, 23, 15, 0.65)), url("../assets/img/main.jpg");
     background-attachment: fixed;
@@ -40,6 +41,10 @@ header {
     background-attachment: fixed;
     background-position: center;
     background-size: cover;
+}
+
+#results img{
+    width: unset;
 }
 
 #receipt {
@@ -58,8 +63,19 @@ header {
     font-family: receiptRegular;
 }
 
+#contactForm {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.863) 0%, rgba(109, 67, 52, 0.411) 100%),url("../assets/img/contact-bg.jpg");
+    background-position: center;
+    background-size:cover;
+    min-height: 93vh;
+}
+
+#contactForm form {
+    max-width: 400px;
+}
+
 .footer{
-    max-height: 10vh;
+    min-height: 7vh;
 }
 
 .invalid{

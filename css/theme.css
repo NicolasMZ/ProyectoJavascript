@@ -351,6 +351,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  resize: none;
 }
 
 button,
@@ -389,10 +390,6 @@ button:not(:disabled),
 ::-moz-focus-inner {
   padding: 0;
   border-style: none;
-}
-
-textarea {
-  resize: vertical;
 }
 
 fieldset {

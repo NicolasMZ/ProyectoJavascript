@@ -62,7 +62,6 @@ function ordenarVarillas(indexCampo, ascendente=true){
             } else {
                 varillas.sort((item1,item2) => item2[indexCampo] - item1[indexCampo]);
             }
-            console.table(varillas);
             break;
         case 'string':
             varillas.sort(function (item1,item2) {
@@ -85,7 +84,6 @@ function ordenarVarillas(indexCampo, ascendente=true){
                 }
                 return 0;
             });
-            console.table(varillas);
             break;
         default:
             alert("El campo no existe, o el tipo de datos no es válido.");
@@ -188,6 +186,8 @@ varillas.push(["Italiana",4.5,  1160]);
 varillas.push(["Italiana",5.5,  1255]);
 varillas.push(["Italiana",6,    1454]);
 varillas.push(["Italiana",7,    1521]);
+ordenarVarillas(1,true);
+ordenarVarillas(0,true);
 
 //-----Cargado de formas de varilla para el usuario-----
 let formasVarilla = [];
@@ -239,21 +239,21 @@ $("#span-formasVarilla").click( (e) => {
                 anchos.push(varillas[i][1]);}
         }
         // ...borrar los botones anteriores si los hubiere...
-        $("#span-anchosVarilla").animate({opacity: 0},200, () => {
+        $("#anchosVarilla").animate({opacity: 0},200, () => {
             $(".b_anchoVarilla").remove();
             // ...y finalmente añadir los botones nuevos.
             for(let ancho of anchos){
-                $("#span-anchosVarilla").append(`
+                $("#anchosVarilla").append(`
                     <button class='btn btn-primary m-1 b_anchoVarilla'>${ancho}</button>`);
             }
-            $("#span-anchosVarilla").animate({opacity: 1},200)
+            $("#anchosVarilla").animate({opacity: 1},200)
         })
     };
 });
 
 //-----Selector de ancho de varilla-----
 let input_anchoVarilla = "";
-$("#span-anchosVarilla").click( (e) => {
+$("#anchosVarilla").click( (e) => {
     //Si tocó correctamente un botón...
     if(!isNaN(e.target.innerHTML)){
     // ...limpiar el seleccionado previamente...
@@ -337,7 +337,34 @@ $("#btn-comenzar").click(()=>{
     $("html").animate({
         scrollTop: $("main").offset().top
     },0)
-})
+});
+
+$("#btn-contacto").click(()=>{
+    $("html").animate({
+        scrollTop: $("#contactForm").offset().top
+    },0)
+});
+
+$("#btn-nuevo").click(()=>{
+    $("html").animate( {scrollTop: $("main").offset().top} , 0 , ()=>{
+        $("#input_anchoMarco").val("");
+        $("#input_altoMarco").val("");
+        $("main section button").removeClass("active");
+        input_tipoMarco = "";
+        input_anchoMarco = "";
+        input_altoMarco = "";
+        input_formaVarilla = "";
+        input_anchoVarilla = "";
+        $("#anchosVarilla").animate({opacity: 0},200, () => {
+            $(".b_anchoVarilla").remove();
+        });
+        $("#buttons").hide(200,()=>{
+            $("#receipt").slideUp(800,()=>{
+                inicializacion();
+            });
+        });
+    });
+});
 
 function animarTicket(){
     $("#results").css({
@@ -345,7 +372,9 @@ function animarTicket(){
         "min-height": "100vh"
     });
     $("html").animate( {scrollTop: $("#results").offset().top,} , 0 , ()=>{
-        
+        $("#buttons").css("display", "flex");
+        $("#buttons").css("opacity", "0");
+
         $("#results").append(`<img id="img-calc1" class="position-absolute" style="display: none;" src="./assets/img/IconMath1.png">`);
         $("#results").append(`<img id="img-calc2" class="position-absolute" style="display: none;" src="./assets/img/IconMath2.png">`);
         $("#results").append(`<img id="img-calc3" class="position-absolute" style="display: none;" src="./assets/img/IconMath3.png">`);
@@ -357,14 +386,17 @@ function animarTicket(){
         $("#img-calc3").delay(900).show(0).delay(300).hide(0);
         $("#img-calc4").delay(1200).show(0).delay(300).hide(0);
         $("#img-calc5").delay(1500).show(0).delay(1200).hide(200);
-
+        
         $("#receipt").delay(2700).slideDown(1000,()=>{
             $("#img-calc1").remove();
             $("#img-calc2").remove();
             $("#img-calc3").remove();
             $("#img-calc4").remove();
             $("#img-calc5").remove();
-        });        
+            $("#buttons").delay(700).fadeTo(1000,1);
+        });
+        
+
     })
 }
 
@@ -373,6 +405,7 @@ $(document).ready(inicializacion());
 
 function inicializacion() {
     $("#receipt").css("display", "none");
+    $("#buttons").css("display", "none");
 
     // Esconder aside de resultados si se está en mobile para evitar espacio en blanco
     if($(window).width()<768){
