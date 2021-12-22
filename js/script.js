@@ -415,3 +415,27 @@ function inicializacion() {
         });
     }
 }
+
+//-----Botón de enviar formulario-----
+$("#btn-enviar").click((e)=>{
+    e.preventDefault();
+    let datos = {   nombre: $("#input-nombre").val(),
+                    correo: $("#input-correo").val(),
+                    telefono: $("#input-telefono").val(),
+                    presupuesto: $("#input-presupuesto").val(),
+                    mensaje: $("#input-mensaje").val(),
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "https://api.npoint.io/604b4990e3d40e2ec68e",
+        data: JSON.stringify(datos),
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            console.log("Error " + response.status + ": " + response.statusText);
+        }
+    });
+});
