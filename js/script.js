@@ -52,7 +52,8 @@
 // ==========================================================================
 
 
-//====== Función para ordenar el listado de varillas ======
+// =============================== FUNCIONES ================================
+// ----- Función para ordenar el listado de varillas -----
 function ordenarVarillas(indexCampo, ascendente=true){
     //Revisar el tipo de dato del primer elemento en el campo suministrado por parámetro, para ordenar correctamente
     switch(typeof(varillas[0][indexCampo])){
@@ -89,9 +90,18 @@ function ordenarVarillas(indexCampo, ascendente=true){
             alert("El campo no existe, o el tipo de datos no es válido.");
             break;
     }
-}
+};
 
-//====== Clase para el cálculo de marcos ======
+// ----- Función para mostrar mensaje modal -----
+function mensajeModal(mensaje){
+    $(".modal-body h6").html(mensaje);
+    $("#exampleModal").modal("show");
+};
+$("#btn-cerrar").click( () => {
+    $("#exampleModal").modal("hide");
+});
+
+// ====================== CLASE PARA CÁLCULO DE MARCOS=======================
 class marco {
     constructor(){
         this.tipoMarco = "";
@@ -161,9 +171,9 @@ class marco {
     }
 }
 
-//========== Main app ==========
+// =============================== MAIN APP =================================
 
-//-----Cargado de tipos de varillas - Se tomarían desde una base de datos
+// ----- Cargado de tipos de varillas - Se tomarían desde una base de datos -----
 let varillas = [];
 varillas.push(["Plana",1,       390]);
 varillas.push(["Plana",1.5,     390]);
@@ -189,7 +199,7 @@ varillas.push(["Italiana",7,    1521]);
 ordenarVarillas(1,true);
 ordenarVarillas(0,true);
 
-//-----Cargado de formas de varilla para el usuario-----
+// ----- Cargado de formas de varilla para el usuario -----
 let formasVarilla = [];
 formasVarilla[0]=varillas[0][0];
 for(let i = 1; i < varillas.length; i++){
@@ -202,7 +212,7 @@ for(let varilla of formasVarilla){
         <button class='btn btn-primary m-1 b_formaVarilla'>${varilla}</button>`);
 }
 
-//-----Selector de tipo de marco-----
+// ----- Selector de tipo de marco -----
 let input_tipoMarco = "";
 $("#b-espejo").click( () => {
     $("#b-espejo").addClass("active");
@@ -217,7 +227,7 @@ $("#b-enmarcado").click( () => {
     input_tipoMarco = "Enmarcado";
 })
 
-//-----Selector de forma de varilla-----
+// ----- Selector de forma de varilla -----
 let input_formaVarilla = "";
 $("#span-formasVarilla").click( (e) => {
     //Si tocó correctamente un botón...
@@ -251,10 +261,10 @@ $("#span-formasVarilla").click( (e) => {
     };
 });
 
-//-----Selector de ancho de varilla-----
+// ----- Selector de ancho de varilla -----
 let input_anchoVarilla = "";
 $("#anchosVarilla").click( (e) => {
-    //Si tocó correctamente un botón...
+    // Si tocó correctamente un botón...
     if(!isNaN(e.target.innerHTML)){
     // ...limpiar el seleccionado previamente...
         $(".b_anchoVarilla").each( (index,element) => {
@@ -267,14 +277,14 @@ $("#anchosVarilla").click( (e) => {
     };
 })
 
-//-----Input de ancho y alto de marco-----
+// ----- Input de ancho y alto de marco -----
 let input_anchoMarco = "";
 let input_altoMarco = "";
 $(".input-medida input").change( (e) => {
     $(e.target).removeClass("invalid");
 })
 
-//-----Calculo de precio-----
+// ----- Calculo de precio -----
 $("#btn-calcular").click( () => {
     // Ocultar el recibo si ya hay uno
     inicializacion();
@@ -331,7 +341,7 @@ $("#btn-calcular").click( () => {
     }
 });
 
-//-----Animaciones-----
+// ----- Animaciones -----
 
 $("#btn-comenzar").click(()=>{
     $("html").animate({
@@ -395,12 +405,10 @@ function animarTicket(){
             $("#img-calc5").remove();
             $("#buttons").delay(700).fadeTo(1000,1);
         });
-        
-
     })
 }
 
-//-----Al cargar la página-----
+// ----- Al cargar la página -----
 $(document).ready(inicializacion());
 
 function inicializacion() {
@@ -416,26 +424,77 @@ function inicializacion() {
     }
 }
 
-//-----Botón de enviar formulario-----
+// ----- Botón de enviar formulario -----
 $("#btn-enviar").click((e)=>{
     e.preventDefault();
-    let datos = {   nombre: $("#input-nombre").val(),
-                    correo: $("#input-correo").val(),
-                    telefono: $("#input-telefono").val(),
-                    presupuesto: $("#input-presupuesto").val(),
-                    mensaje: $("#input-mensaje").val(),
-    };
+    validateForm();
+});
 
+// Verificación con API email-validator.net
+function validateForm(){
     $.ajax({
-        type: "POST",
-        url: "https://api.npoint.io/604b4990e3d40e2ec68e",
-        data: JSON.stringify(datos),
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
+        url: 'https://api.email-validator.net/api/verify',
+        type: 'POST',
+        cache: false,
+        crossDomain: true,
+        data: { EmailAddress: $("#input-correo").val(), APIKey: 'ev-069a63331b994bd545ac7cad9d9d650b' },
+        dataType: 'json',
+        resultado: false,
+        success: function (json){
+            if(json.status != 200 && json.status != 207 && json.status != 215){
+                $("#input-correo").addClass("is-invalid");   
+            } else {
+                $("#input-correo").removeClass("is-invalid");
+            }
+            if($("#input-nombre").val() == ""){
+                $("#input-nombre").addClass("is-invalid");
+            } else {
+                $("#input-nombre").removeClass("is-invalid");
+            }
+            
+            let aux = $("#input-telefono").val().replace(/ /g,"");
+            aux = aux.replace(/-/g,"");
+            if(aux!="" && (aux.length<6 || aux.length>10)){
+                $("#input-telefono").addClass("is-invalid");
+            } else {
+                $("#input-telefono").removeClass("is-invalid");
+            }
+        
+            if($("#input-mensaje").val() == ""){
+                $("#input-mensaje").addClass("is-invalid");
+            } else {
+                $("#input-mensaje").removeClass("is-invalid");
+            }
         },
-        error: function (response) {
-            console.log("Error " + response.status + ": " + response.statusText);
+    })
+};
+
+$(document).ajaxComplete((event,xhr,settings) => {
+    if(settings.url == 'https://api.email-validator.net/api/verify'){
+        let datos = {
+            nombre: $("#input-nombre").val(),
+            correo: $("#input-correo").val(),
+            telefono: $("#input-telefono").val(),
+            presupuesto: $("#input-presupuesto").val(),
+            mensaje: $("#input-mensaje").val(),
+        };
+        if(!($("#input-nombre").hasClass("is-invalid") ||
+            $("#input-correo").hasClass("is-invalid") ||
+            $("#input-telefono").hasClass("is-invalid") ||
+            $("#input-mensaje").hasClass("is-invalid"))){
+            $.ajax({
+                type: "POST",
+                url: "https://api.npoint.io/604b4990e3d40e2ec68e",
+                data: JSON.stringify(datos),
+                dataType: "json",
+                success: function (response) {
+                    mensajeModal("El formulario se envió correctamente.<br><br> ¡Nos comunicaremos con vos a la brevedad!")
+                },
+                error: function (response) {
+                    mensajeModal(`Hubo un problema al enviar el formulario.<br><br>Código de error ${response.status}`)
+                }
+            });
         }
-    });
+        var resultado;
+    };
 });
