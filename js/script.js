@@ -53,6 +53,21 @@
 
 
 // =============================== FUNCIONES ================================
+
+// ----- Función para preparar punto de partida de animaciones -----
+function inicializacion() {
+    $("#receipt").css("display", "none");
+    $("#buttons").css("display", "none");
+
+    // Esconder aside de resultados si se está en mobile para evitar espacio en blanco
+    if($(window).width()<768){
+        $("#results").css({
+            "display": "none",
+            "min-height": 0
+        });
+    }
+}
+
 // ----- Función para ordenar el listado de varillas -----
 function ordenarVarillas(indexCampo, ascendente=true){
     //Revisar el tipo de dato del primer elemento en el campo suministrado por parámetro, para ordenar correctamente
@@ -92,6 +107,39 @@ function ordenarVarillas(indexCampo, ascendente=true){
     }
 };
 
+// ----- Función para crear animación de ticket generado -----
+function animarTicket(){
+    $("#results").css({
+        "display": "",
+        "min-height": "100vh"
+    });
+    $("html").animate( {scrollTop: $("#results").offset().top,} , 0 , ()=>{
+        $("#buttons").css("display", "flex");
+        $("#buttons").css("opacity", "0");
+
+        $("#results").append(`<img id="img-calc1" class="position-absolute" style="display: none;" src="./assets/img/IconMath1.png">`);
+        $("#results").append(`<img id="img-calc2" class="position-absolute" style="display: none;" src="./assets/img/IconMath2.png">`);
+        $("#results").append(`<img id="img-calc3" class="position-absolute" style="display: none;" src="./assets/img/IconMath3.png">`);
+        $("#results").append(`<img id="img-calc4" class="position-absolute" style="display: none;" src="./assets/img/IconMath4.png">`);
+        $("#results").append(`<img id="img-calc5" class="position-absolute" style="display: none;" src="./assets/img/IconMath5.png">`);
+        
+        $("#img-calc1").delay(300).show(0).delay(300).hide(0);
+        $("#img-calc2").delay(600).show(0).delay(300).hide(0);
+        $("#img-calc3").delay(900).show(0).delay(300).hide(0);
+        $("#img-calc4").delay(1200).show(0).delay(300).hide(0);
+        $("#img-calc5").delay(1500).show(0).delay(1200).hide(200);
+        
+        $("#receipt").delay(2700).slideDown(1000,()=>{
+            $("#img-calc1").remove();
+            $("#img-calc2").remove();
+            $("#img-calc3").remove();
+            $("#img-calc4").remove();
+            $("#img-calc5").remove();
+            $("#buttons").delay(700).fadeTo(1000,1);
+        });
+    })
+}
+
 // ----- Función para mostrar mensaje modal -----
 function mensajeModal(mensaje){
     $(".modal-body h6").html(mensaje);
@@ -100,6 +148,22 @@ function mensajeModal(mensaje){
 $("#btn-cerrar").click( () => {
     $("#exampleModal").modal("hide");
 });
+
+// ----- Función para actualizar el campo 'Presupuesto' del formulario de contacto -----
+function actualizarPresupuestos(){
+    if(localStorage.getItem("Historial") != null){
+        $("#input-presupuesto").html("");
+        let historial = JSON.parse(localStorage.getItem("Historial"));
+        for(let i=0 ; i<historial.length ; i++){
+            $("#input-presupuesto").prepend(
+                `<option>${historial[i].tipoMarco} 
+                ${historial[i].anchoMarco}x${historial[i].altoMarco}cm. 
+                ${historial[i].formaVarilla} ${historial[i].anchoVarilla}cm. $
+                ${historial[i].precio}</option>`
+            )
+        };
+    }
+};
 
 // ====================== CLASE PARA CÁLCULO DE MARCOS=======================
 class marco {
@@ -116,6 +180,7 @@ class marco {
         this.conPptBco = false;
         this.conPptCol = false;
         this.fecha = "";
+        this.precio = 0;
     }
     
     precioMetroCuadrado(){
@@ -130,7 +195,7 @@ class marco {
     mostrarPrecio(){
         let precioLineal = (this.anchoMarco + this.altoMarco)/50 * this.precioVarilla;
         let precioArea = this.anchoMarco*this.altoMarco/10000 * this.precioMetroCuadrado();
-        let precio = (precioLineal + precioArea).toFixed(2);
+        this.precio = (precioLineal + precioArea).toFixed(2);
 
         let d = new Date();
         this.fecha = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
@@ -152,7 +217,7 @@ class marco {
         if(this.conPptCol){texto = texto + "&nbsp+ Paspartu de color<br>"};
         texto = texto +
         `<br>*********************<br>`+
-        `<br><h5 class='text-end'>Total $ ${precio}&nbsp</h5>`
+        `<br><h5 class='text-end'>Total $ ${this.precio}&nbsp</h5>`
 
         $("#receipt:nth-child(1)").html(texto);
     }
@@ -172,6 +237,12 @@ class marco {
 }
 
 // =============================== MAIN APP =================================
+
+// ----- Al cargar la página -----
+$(document).ready(() => {
+    inicializacion();
+    actualizarPresupuestos();
+});
 
 // ----- Cargado de tipos de varillas - Se tomarían desde una base de datos -----
 let varillas = [];
@@ -284,7 +355,9 @@ $(".input-medida input").change( (e) => {
     $(e.target).removeClass("invalid");
 })
 
-// ----- Calculo de precio -----
+// =============================== BOTONES ==================================
+
+// ----- Botón de cálculo de precio -----
 $("#btn-calcular").click( () => {
     // Ocultar el recibo si ya hay uno
     inicializacion();
@@ -314,6 +387,7 @@ $("#btn-calcular").click( () => {
         marco1.mostrarPrecio();
         marco1.agregarLocalStorage();
         animarTicket();
+        actualizarPresupuestos()
         
     } else { // Sino, mostrar donde hay error
         if(input_tipoMarco === ""){
@@ -340,8 +414,6 @@ $("#btn-calcular").click( () => {
         }
     }
 });
-
-// ----- Animaciones -----
 
 $("#btn-comenzar").click(()=>{
     $("html").animate({
@@ -376,60 +448,11 @@ $("#btn-nuevo").click(()=>{
     });
 });
 
-function animarTicket(){
-    $("#results").css({
-        "display": "",
-        "min-height": "100vh"
-    });
-    $("html").animate( {scrollTop: $("#results").offset().top,} , 0 , ()=>{
-        $("#buttons").css("display", "flex");
-        $("#buttons").css("opacity", "0");
-
-        $("#results").append(`<img id="img-calc1" class="position-absolute" style="display: none;" src="./assets/img/IconMath1.png">`);
-        $("#results").append(`<img id="img-calc2" class="position-absolute" style="display: none;" src="./assets/img/IconMath2.png">`);
-        $("#results").append(`<img id="img-calc3" class="position-absolute" style="display: none;" src="./assets/img/IconMath3.png">`);
-        $("#results").append(`<img id="img-calc4" class="position-absolute" style="display: none;" src="./assets/img/IconMath4.png">`);
-        $("#results").append(`<img id="img-calc5" class="position-absolute" style="display: none;" src="./assets/img/IconMath5.png">`);
-        
-        $("#img-calc1").delay(300).show(0).delay(300).hide(0);
-        $("#img-calc2").delay(600).show(0).delay(300).hide(0);
-        $("#img-calc3").delay(900).show(0).delay(300).hide(0);
-        $("#img-calc4").delay(1200).show(0).delay(300).hide(0);
-        $("#img-calc5").delay(1500).show(0).delay(1200).hide(200);
-        
-        $("#receipt").delay(2700).slideDown(1000,()=>{
-            $("#img-calc1").remove();
-            $("#img-calc2").remove();
-            $("#img-calc3").remove();
-            $("#img-calc4").remove();
-            $("#img-calc5").remove();
-            $("#buttons").delay(700).fadeTo(1000,1);
-        });
-    })
-}
-
-// ----- Al cargar la página -----
-$(document).ready(inicializacion());
-
-function inicializacion() {
-    $("#receipt").css("display", "none");
-    $("#buttons").css("display", "none");
-
-    // Esconder aside de resultados si se está en mobile para evitar espacio en blanco
-    if($(window).width()<768){
-        $("#results").css({
-            "display": "none",
-            "min-height": 0
-        });
-    }
-}
-
 // ----- Botón de enviar formulario -----
 $("#btn-enviar").click((e)=>{
     e.preventDefault();
     validateForm();
 });
-
 // Verificación con API email-validator.net
 function validateForm(){
     $.ajax({
@@ -446,6 +469,7 @@ function validateForm(){
             } else {
                 $("#input-correo").removeClass("is-invalid");
             }
+            // Las demás validaciones se realizan dentro del AJAX para mostrarlas en pantalla en simultáneo con la del correo
             if($("#input-nombre").val() == ""){
                 $("#input-nombre").addClass("is-invalid");
             } else {
@@ -468,7 +492,7 @@ function validateForm(){
         },
     })
 };
-
+// Se usa este evento porque debe terminar la validación (que lleva cierto tiempo por el AJAX anterior) antes de hacer el envío de formulario
 $(document).ajaxComplete((event,xhr,settings) => {
     if(settings.url == 'https://api.email-validator.net/api/verify'){
         let datos = {
@@ -495,6 +519,5 @@ $(document).ajaxComplete((event,xhr,settings) => {
                 }
             });
         }
-        var resultado;
     };
 });
