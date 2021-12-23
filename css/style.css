@@ -23,7 +23,7 @@ header {
 }
 
 #anchosVarilla {
-    min-height: 130px;
+    min-height: 100px;
     min-width: 100px;
 }
 
@@ -72,7 +72,7 @@ header {
 }
 
 #contactForm form {
-    max-width: 400px;
+    max-width: 500px;
 }
 
 .footer{
